@@ -1,0 +1,58 @@
+CGNPS: Coarse-Grained Nuclear Periphery Simulator
+
+CGNPS is a molecular dynamics simulation package for simulating a coarse-
+grained model of the mammalian nuclear periphery. CGNPS is intended to enable a
+researcher to study nuclear mechanotransduction in three stages: (a) assemble
+the nuclear periphery structure with bioimaging and bioinformatics data, (b)
+tune interaction parameters for calibration with biomechanical data, and (c)
+build and run custom in silico experiments to study nuclear
+mechanotransduction.
+
+Date:               02-Apr-22
+Version:            0.6.0
+
+################################## Developers #################################
+Pranjal Singh, pranjal.officemail@gmail.com
+
+################# Description of files in this directory ######################
+README              the README (this) file
+assembly/*          in silico structural assembly module
+LICENSE             the license file
+
+############################### Dependencies ##################################
+1. LAMMPS
+# Steve Plimpton, Fast Parallel Algorithms for Short-Range Molecular Dynamics,
+# J Comp Phys, 117, 1-19 (1995). doi.org/10.1006/jcph.1995.1039.
+# website: lammps.sandia.gov
+
+2. Fluidmembrane
+# Fu, S.-P., Peng, Z., Yuan, H., Kfoury, R., Young, Y.-N. (2016),
+# Lennard-Jones type pair-potential method for coarse-grained lipid bilayer
+# membrane simulations in LAMMPS, Mendeley Data, V1,
+# doi.org/10.17632/4v53nkv5hc.1
+# website: doi.org/10.17632/4v53nkv5hc.1
+
+3. NumPy for Python 2 and Python 3
+# Harris, C.R., Millman, K.J., van der Walt, S.J. et al. Array programming with
+# NumPy. Nature 585, 357–362 (2020). doi.org/10.1038/s41586-020-2649-2.
+# website: numpy.org
+
+############################# Installation ####################################
+1. Please refer to the cited articles and website for installation instructions
+   of the above 3 dependencies.
+2. The original pair_fluidmembrane.cpp in Fluidmembrane dependency will need a
+   few modifications to make it compatible with the new LAMMPS versions. It is
+   easy to do, but feel free to contact the Developer for the updated version.
+
+################################ Usage ########################################
+Step 0: Read the article at: [Link to bioRxiv article to be added here, likely
+        by May 15, 2022]
+
+Step 1: Assemble the CGNP structure with bioimaging and bioinformatics data.
+
+        The assembly module is used to generate and assemble the NP structure
+        with experimental guidance. A new user would reproduce
+        Fig. 1 in the article using this software module to get familiarity
+        with the process. Then, the user can use their own bioimaging and
+        bioinformatics data to assemble the NP structure for the specific
+        mammalian nucleus being investigated.

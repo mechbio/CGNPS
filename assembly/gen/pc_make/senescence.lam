@@ -1,0 +1,383 @@
+# senescence.lam 
+
+##################################################
+
+# Variables and definitions
+
+variable btime equal (step*DELTA_T)
+
+##################################################
+
+# Simulation basic definitions
+
+units lj
+atom_style hybrid ellipsoid full
+boundary f f f
+neighbor 1.1 bin
+neigh_modify every 1 delay 1 check yes
+
+read_data INIT_FILE
+
+##################################################
+
+# Simulation box definition -- repulsive at all boundaries
+
+change_box all x final IXLO IXHI y final IYLO IYHI & 
+z final IZLO IZHI  boundary f f f units box
+fix wall all wall/lj126 &
+xlo EDGE 1.0 1.0 1.122462048 &
+xhi EDGE 1.0 1.0 1.122462048 &
+ylo EDGE 1.0 1.0 1.122462048 &
+yhi EDGE 1.0 1.0 1.122462048 &
+zlo EDGE 1.0 1.0 1.122462048 &
+zhi EDGE 1.0 1.0 1.122462048 units box
+
+##################################################
+##################################################
+# Part 1 - Initial equilibration
+##################################################
+##################################################
+
+# Set Brownian dynamics
+
+fix 1 all nve # NVE ensemble
+fix 2 all langevin 1.0 1.0 1.0 PREP1_SEED # Brownian dynamics
+
+##################################################
+
+# Integrator
+
+timestep DELTA_T
+
+##################################################
+
+# Parallel computation details
+
+comm_style tiled
+fix bal all balance 100000 1.1 rcb
+comm_modify cutoff 3.0
+
+##################################################
+
+# Dumps/output
+
+compute gyr all gyration
+thermo PREP1_PRINTFREQ
+thermo_style custom v_btime temp epair vol c_gyr
+
+##################################################
+
+# Potentials and Runs
+
+bond_style harmonic
+bond_coeff 1 EHARM 1.1
+
+angle_style cosine
+angle_coeff 1 10.0
+
+# Use soft potential for equilibration to resolve crossovers
+
+pair_style soft 1.12246152962189
+pair_coeff * * ESOFT 1.12246152962189
+variable asoft equal ramp(0,ESOFT)
+fix push all adapt 1 pair soft a * * v_asoft
+
+run PREP1_TIME_1
+
+unfix push
+variable asoft delete
+
+# Change to FENE bonds
+
+bond_style fene
+bond_coeff 1 30.0 1.6 1.0 1.0
+special_bonds fene
+
+run PREP1_TIME_2
+
+# Change to lj/cut potential
+
+pair_style lj/cut 1.12246152962189
+pair_modify shift yes
+pair_coeff * * 1.0 1.0 1.12246152962189
+
+angle_style none # A flexible fibre
+
+run PREP1_TIME_3
+
+##################################################
+
+# Unfix/undump
+
+unfix wall
+unfix 1
+unfix 2
+
+##################################################
+##################################################
+# Part 2 - Reduce box size
+##################################################
+##################################################
+
+# Reduce simulation box size using indenter
+
+variable zhi equal (ZHI-1.5)
+variable xloramp equal ramp(IXLO,XLO)
+variable xhiramp equal ramp(IXHI,XHI)
+variable yloramp equal ramp(IYLO,YLO)
+variable yhiramp equal ramp(IYHI,YHI)
+variable zloramp equal ramp(IZLO,ZLO)
+variable zhiramp equal ramp(IZHI,${zhi})
+
+fix wall all wall/lj126 &
+xlo v_xloramp 1.0 1.0 1.122462048 &
+xhi v_xhiramp 1.0 1.0 1.122462048 &
+ylo v_yloramp 1.0 1.0 1.122462048 &
+yhi v_yhiramp 1.0 1.0 1.122462048 &
+zlo v_zloramp 1.0 1.0 1.122462048 &
+zhi v_zhiramp 1.0 1.0 1.122462048 units box 
+
+##################################################
+
+# Set Brownian dynamics
+
+fix 1 all nve
+fix 2 all langevin 1.0 1.0 1.0 PREP2_SEED
+
+##################################################
+
+# Dumps/output
+
+thermo PREP2_PRINTFREQ
+thermo_style custom v_btime temp epair vol c_gyr
+
+##################################################
+
+# Run
+
+reset_timestep 0
+run PREP2_TIME
+
+##################################################
+
+# Unfix/undump
+
+unfix wall
+unfix 1
+unfix 2
+
+##################################################
+##################################################
+# Part 3 - Add and equilibrate with the lamina beads
+##################################################
+##################################################
+
+# Define groups
+
+group lamina type 3 # Lamina beads
+group chromo subtract all lamina # Chromatin beads
+
+##################################################
+
+# Change simulation box
+
+change_box all x final XLO XHI y final YLO YHI & 
+z final ZLO ZHI  boundary p p f units box
+fix wall all wall/lj126 &
+zhi EDGE 1.0 1.0 1.122462048 &
+zlo EDGE 1.0 1.0 1.122462048 units box
+
+##################################################
+
+# Make lamina beads
+
+variable zLaminaOut equal (ZHI-0.5) 
+variable zLaminaIn equal (ZHI-1.0)
+
+region p1 plane 0.0 0.0 ${zLaminaOut} 0.0 0.0 1.0 side out
+region p2 plane 0.0 0.0 ${zLaminaIn} 0.0 0.0 1.0 side in
+region shell intersect 2 p1 p2
+
+create_atoms 3 random LAM_ATOMS LAM_SEED shell
+
+# Unfix/undump
+
+region p1 delete
+region p2 delete
+region shell delete
+variable zLaminaOut delete
+variable zLaminaIn delete
+
+##################################################
+
+# Set Brownian dynamics
+
+fix 1 chromo nve
+fix 2 chromo langevin 1.0 1.0 1.0 PREP3_SEED
+
+##################################################
+
+# Dumps/output
+
+uncompute gyr
+compute gyr chromo gyration
+compute chromoTemp chromo temp
+thermo PREP3_PRINTFREQ
+thermo_style custom v_btime c_chromoTemp epair vol c_gyr
+
+##################################################
+
+# Potentials
+
+pair_style lj/cut 1.12246152962189
+pair_modify shift yes
+pair_coeff * * 1.0 1.0 1.12246152962189
+pair_coeff 3 3 0.0 0.0 # No interaction between lamina beads 
+
+##################################################
+
+# Run
+
+reset_timestep 0
+run PREP3_TIME
+
+##################################################
+
+# Unfix/undump
+
+unfix wall
+unfix 1
+unfix 2
+
+write_data EQUIL_ENDFILE nocoeff
+
+##################################################
+##################################################
+# Part 4 - Main simulation
+##################################################
+##################################################
+
+# Start from scratch
+
+clear
+
+##################################################
+
+# Simulation basic definitions
+
+units lj
+atom_style hybrid ellipsoid full
+boundary p p f
+neighbor 1.1 bin
+neigh_modify every 1 delay 1 check yes
+
+read_data EQUIL_ENDFILE
+
+##################################################
+
+# Define groups
+
+group lamina type 3 # Lamina beads
+group chromo subtract all lamina # Chromatin beads
+
+##################################################
+
+# Simulation box definition -- repulsive at z boundaries
+
+change_box all x final XLO XHI y final YLO YHI & 
+z final ZLO ZHI  boundary p p f units box
+fix wall chromo wall/lj126 zhi EDGE 1.0 1.0 1.122462048 &
+zlo EDGE 1.0 1.0 1.122462048 units box
+
+##################################################
+
+# Set Brownian dynamics
+
+fix 1 chromo nve
+fix 2 chromo langevin 1.0 1.0 1.0 RUN_SEED
+
+##################################################
+
+# Integrator
+
+timestep DELTA_T
+
+##################################################
+
+# Parallel computation details
+
+comm_style tiled
+fix bal all balance 100000 1.1 rcb
+comm_modify cutoff 3.0
+
+##################################################
+
+# Dumps/output
+
+compute gyr chromo gyration
+compute chromoTemp chromo temp
+thermo RUN_PRINTFREQ
+thermo_style custom v_btime c_chromoTemp epair vol c_gyr
+dump 1 all atom RUN_PRINTFREQ atoms.lammpstrj
+
+##################################################
+
+# Potentials and Runs
+
+bond_style fene
+special_bonds fene
+bond_coeff 1 30.0 1.6 1.0 1.0
+
+angle_style none # A flexible fibre
+
+pair_style lj/cut 1.12246152962189
+pair_modify shift yes
+pair_coeff * * 1.0 1.0 1.12246152962189
+
+# Set the strength of different interactions (HC-HC, HL-NL, EC-EC)
+
+# HC beads attract to the lamina
+if "EHCHC > 0.0" then &
+   "pair_coeff 2 2 EHCHC SIGMA CUTOFF"
+if "EHCNL > 0.0" then &
+   "pair_coeff 2 3 EHCNL SIGMA CUTOFF"
+if "EECEC > 0.0" then &
+   "pair_coeff 1 1 EECEC SIGMA CUTOFF"
+
+# No interaction between lamina beads
+pair_coeff 3 3 0.0 0.0 0.0 
+
+##################################################
+
+# Run
+
+reset_timestep 0
+run RUN_TIME
+
+##################################################
+
+# Write data
+
+# remove redundant information
+group redundant type 3 4
+delete_atoms group redundant
+delete_bonds all angle 1 remove
+
+# to have sigma about 10 nm instead of 70 nm
+change_box all x scale 7.0 y scale 7.0 z scale 7.0 remap
+# to have T about 0.23 instead of 1.0
+velocity all scale 0.4796
+
+# write_data RUN_ENDFILE nocoeff
+write_data data/pc.data nocoeff
+
+##################################################
+
+# Unfix/undump
+
+unfix wall
+undump 1
+unfix 1
+unfix 2
+
+##################################################
