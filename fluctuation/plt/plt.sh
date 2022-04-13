@@ -28,7 +28,7 @@
 # Clone repo of Pizza.py from GitHub and add this to ~/.bashrc
 # export LAMMPS_PYTHON_TOOLS="path to Pizza.py directory"/src
 
-python2 dump2spatial.py '../data/NE.lammpstrj' 'spatial.mat' #>/dev/null
+python2 dump2spatial.py '../data/NM.lammpstrj' 'spatial.mat' #>/dev/null
 # module load anaconda3
 python3 spatial2freq.py 'spatial.mat' '../data/freq.dat'
 rm spatial.mat

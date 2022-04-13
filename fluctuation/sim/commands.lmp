@@ -6,7 +6,7 @@
 # This software is released under the GNU General Public License.
 
 # -----------------------------------------------------------------------------
-# This file (commands.lmp) obtains snapshots of nuclear morphology.
+# This file (commands.lmp) obtains snapshots of nuclear surface morphology.
 # -----------------------------------------------------------------------------
 
 # date             :02-Mar-22
@@ -15,6 +15,6 @@
 # LAMMPS_version   :patch_7Jan2022
 
 # Record NE morphology --------------------------------------------------------
-dump morphology monolayer atom 1000 ../data/NE.lammpstrj
+dump morphology monolayer atom 1000 ../data/NM.lammpstrj
 run 10000
 undump morphology

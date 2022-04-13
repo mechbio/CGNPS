@@ -10,8 +10,8 @@
 # This file (ne_csk.sh) is for generating ne_csk.data.
 # -----------------------------------------------------------------------------
 
-# date         :08-Jan-22
-# version      :0.6.0
+# date         :10-Apr-22
+# version      :0.7.0
 # usage        :./ne_csk.sh
 # sh_version   :4.2.46(2)-release
 
@@ -19,6 +19,7 @@
 python3 ne_csk.py 2.5
 
 # copy to data
+mkdir -p ../../data/
 mv ne_csk.data ../../data/
 
 exit 0
