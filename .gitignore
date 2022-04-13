@@ -1,1 +1,8 @@
-test_gitignore
+# Exclude output files
+*/data/*
+*/fig/*
+*/sim/log.lammps
+
+# Exclude works in progress
+stretching/
+indentation/

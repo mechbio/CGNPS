@@ -15,7 +15,7 @@
 # date             :30-Feb-22
 # version          :0.6.0
 # usage            :lmp_mylammps < init.lmp
-# LAMMPS_version   :stable_29Sep2021
+# LAMMPS_version   :patch_7Jan2022
 
 # Variables -------------------------------------------------------------------
 variable seed equal 221 # seed for pseudo-random number generation

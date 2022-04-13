@@ -1,0 +1,197 @@
+# -*- coding: utf-8 -*-
+
+# CGNPS - Coarse-Grained Nuclear Periphery Simulator
+#
+# See the README file in the top-level CGNPS directory.
+# This software is released under the GNU General Public License.
+
+# -----------------------------------------------------------------------------
+# This file (sim.lmp) is the LAMMPS input file for simulating the CGNP as per
+# the commands in commands.lmp.
+# -----------------------------------------------------------------------------
+
+# date             :02-Mar-22
+# version          :0.7.0
+# usage            :lmp_mylammps < sim.lmp
+# LAMMPS_version   :patch_7Jan2022
+
+# Variables -------------------------------------------------------------------
+variable seed equal 221 # seed for pseudo-random number generation
+variable scl equal 2.5
+
+# Domain and initial configuration --------------------------------------------
+units lj # reduced units
+dimension 3 # 3D
+boundary p p f # z defined as 'fixed', but reflective bc applied later on
+# LAMMPS package ASPHERE required for atom_style ellipsoid
+atom_style hybrid ellipsoid full
+
+# Domain decomposition for 4 processors, modify as needed
+processors 2 2 1
+
+read_restart ../../assembly/data/init.restart
+
+# change_box all triclinic
+
+# Particle information --------------------------------------------------------
+
+# Masses
+mass 1 1.237
+mass 2 60.00
+mass 3 0.070
+mass 4 0.068
+mass 5*6 4.475
+mass 7 0.105
+mass 8 1.300
+
+# Shape of ellipsoidal particles
+set type 1*2 shape 2  2  2 # spherical diameter of 20 nm
+set type 3*8 shape 0  0  0 # not ellipsoid
+
+# Interaction Potentials ------------------------------------------------------
+
+# Pairwise interaction
+# The fluidmembrane package is required for pair_style fluidmembrane
+# Please cite the fluidmembrane package separately, as it is not part of this
+# package. See ../README for details.
+pair_style hybrid fluidmembrane 7.5 mie/cut 1.0
+pair_coeff	1	1	fluidmembrane	1.0	2.121320	5.20	4	7.5	0.0
+pair_coeff	1	2	fluidmembrane	2.0	4.949747	10.10	4	7.5	0.0
+pair_coeff	2	2	mie/cut	0.010000	10.606602	4	2	15.00
+pair_coeff	3	3	mie/cut	0.020000	1.048297	9	6	1.92
+pair_coeff	4	4	mie/cut	0.020000	1.048297	9	6	1.92
+pair_coeff	3	4	mie/cut	0.020000	1.048297	9	6	1.92
+pair_coeff	2	3	mie/cut	0.010000	2.620741	9	6	4.20
+pair_coeff	2	4	mie/cut	0.010000	2.620741	9	6	4.20
+pair_coeff	1	3	mie/cut	0.010000	2.620741	9	6	4.20
+pair_coeff	1	4	mie/cut	0.020000	2.620741	9	6	4.20
+pair_coeff	5	5	mie/cut	0.020000	4.949747	4	2	7.00
+pair_coeff	6	6	mie/cut	0.100000	4.949747	4	2	11.20
+pair_coeff	5	6	mie/cut	0.044721	4.949747	4	2	9.10
+pair_coeff	4	5	mie/cut	0.020000	3.581680	9	6	4.10
+pair_coeff	4	6	mie/cut	0.044721	3.581680	9	6	5.74
+pair_coeff	3	5	mie/cut	0.020000	3.581680	9	6	4.10
+pair_coeff	3	6	mie/cut	0.044721	3.581680	9	6	5.74
+pair_coeff	2	5	mie/cut	0.010000	7.778175	4	2	11.00
+pair_coeff	2	6	mie/cut	0.010000	7.778175	4	2	13.20
+pair_coeff	1	5	mie/cut	0.010000	3.535534	4	2	5.00
+pair_coeff	1	6	mie/cut	0.010000	3.535534	4	2	7.00
+pair_coeff	7	7	mie/cut	0.020000	0.698864	9	6	1.12
+pair_coeff	8	8	mie/cut	0.100000	2.096593	9	6	2.40
+pair_coeff	7	8	mie/cut	0.044721	1.397729	9	6	1.60
+pair_coeff	6	7	mie/cut	0.044721	3.406964	9	6	3.90
+pair_coeff	6	8	mie/cut	0.044721	4.105828	9	6	4.70
+pair_coeff	5	7	mie/cut	0.020000	3.406964	9	6	3.90
+pair_coeff	5	8	mie/cut	0.044721	4.105828	9	6	4.70
+pair_coeff	4	7	mie/cut	0.020000	0.873580	9	6	1.00
+pair_coeff	4	8	mie/cut	0.044721	1.572445	9	6	1.80
+pair_coeff	3	7	mie/cut	0.020000	0.873580	9	6	1.00
+pair_coeff	3	8	mie/cut	0.044721	1.572445	9	6	1.80
+pair_coeff	2	7	mie/cut	0.014142	6.901286	9	6	7.90
+pair_coeff	2	8	mie/cut	0.031623	7.600150	9	6	8.70
+pair_coeff	1	7	mie/cut	0.050000	4.717335	9	6	5.94
+pair_coeff	1	8	mie/cut	0.050000	4.717335	9	6	5.94
+
+# Bonded interaction
+# LAMMPS package MOLECULE required for fene and cosine/delta
+special_bonds lj 0.0 1.0 1.0
+bond_style hybrid harmonic morse fene
+bond_coeff	1	harmonic	75.000	2.000	# NL filament
+bond_coeff	2	harmonic	75.000	1.000	# FA filament
+bond_coeff	3	harmonic	75.000	1.200	# MT filament
+bond_coeff	4	fene	0.141	11.200	0.230	7.000	# PC chain
+bond_coeff	5	morse	0.200	3.162	1.200	# CL
+bond_coeff	6	morse	0.200	1.225	3.000	# IL-A
+bond_coeff	7	morse	0.200	0.707	5.000	# IL-B
+bond_coeff	8	morse	0.750	0.707	5.400	# OL
+angle_style cosine/delta
+angle_coeff	1	6.325	180.000	# NL filament
+angle_coeff	2	64.170	180.000	# FA filament
+angle_coeff	3	231.342	180.000	# MT filament
+
+# Groups and computes ---------------------------------------------------------
+group NM type 1
+group NPC type 2
+group NLA type 3
+group NLB type 4
+group EC type 5
+group HC type 6
+group FA type 7
+group MT type 8
+group monolayer type 1 2
+group meshwork type 3 4
+group chain type 5 6
+group csk type 7 8
+group NE type 1 2 3 4
+group NEandPC type 1 2 3 4 5 6
+
+compute monolayertemp monolayer temp/asphere
+compute meshworktemp meshwork temp
+compute chaintemp chain temp
+compute FAtemp FA temp
+compute MTtemp MT temp
+
+# Timestep --------------------------------------------------------------------
+reset_timestep 0
+timestep 0.001
+
+# Output settings -------------------------------------------------------------
+
+dump 1 all atom 10000 ../data/sim.lammpstrj
+compute 1 all property/local btype batom1 batom2
+# compute 2 all bond/local dist force
+dump 2 all local 10000 ../data/sim.dump_local index c_1[1] c_1[2] c_1[3]
+ # c_2[1] c_2[2]
+
+thermo_modify warn ignore
+thermo 1000
+compute er monolayer erotate/asphere
+compute et monolayer ke
+thermo_style custom step c_monolayertemp c_meshworktemp c_chaintemp &
+c_FAtemp c_MTtemp epair ebond eangle etotal c_er c_et
+
+# Simulation settings -------------------------------------------------------
+
+# Hold monolayer COM
+fix 0a monolayer recenter INIT INIT INIT
+
+# Reflective boundary conditions
+fix 0b all wall/reflect zlo -250
+fix 0c all wall/reflect zhi 100
+
+# Thermostats and implicit solvation
+fix monolayerdyn1 monolayer nve/asphere
+fix meshworkdyn1 meshwork nve
+fix chaindyn1 chain nve
+fix FAdyn1 FA nve
+fix MTdyn1 MT nve
+
+fix monolayerdyn2 monolayer langevin 0.23 0.23 0.33813 ${seed} angmom 0.033333
+fix_modify monolayerdyn2 temp monolayertemp
+fix meshworkdyn2 meshwork langevin 0.23 0.23 0.00471 ${seed}
+fix chaindyn2 chain langevin 0.23 0.23 0.05243 ${seed}
+fix FAdyn2 FA langevin 0.23 0.23 0.40785 ${seed}
+fix MTdyn2 MT langevin 0.23 0.23 0.08494 ${seed}
+
+# Reversible bonding
+fix	CLbrk all	bond/break	200	5	1.800
+fix	ILAbrk all	bond/break	200	6	4.500
+fix	ILBbrk all	bond/break	200	7	10.000
+fix	OLbrk all	bond/break	200	8	10.800
+
+fix	3CL3 all	bond/create	1000	3 3	1.320	5	iparam 2 3	jparam 2 3
+fix	4CL4 all	bond/create	1000	4 4	1.320	5	iparam 2 4	jparam 2 4
+fix	3ILA1 all	bond/create	1000	1 3	3.300	6	iparam 1 1	jparam 1 3
+fix	3ILA2 all	bond/create	1000	2 3	3.300	6	iparam 5 2	jparam 1 3
+fix	4ILA1 all	bond/create	1000	1 4	3.300	6	iparam 1 1	jparam 1 4
+fix	4ILA2 all	bond/create	1000	2 4	3.300	6	iparam 2 2	jparam 1 4
+fix	6ILB1 all	bond/create	1000	1 6	5.500	7	iparam 1 1	jparam 1 6
+fix	7OL1 all	bond/create	1000	1 7	5.940	8	iparam 1 1	jparam 1 7
+fix	8OL1 all	bond/create	1000	1 8	5.940	8	iparam 1 1	jparam 1 8
+
+# Simulation ------------------------------------------------------------------
+# Run simulation commands
+include commands.lmp
+
+# Exit ------------------------------------------------------------------------
+#quit

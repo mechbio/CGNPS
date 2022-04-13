@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+
+# CGNPS - Coarse-Grained Nuclear Periphery Simulator
+#
+# See the README file in the top-level CGNPS directory.
+# This software is released under the GNU General Public License.
+
+# -----------------------------------------------------------------------------
+# This file (commands.lmp) obtains snapshots of nuclear morphology.
+# -----------------------------------------------------------------------------
+
+# date             :02-Mar-22
+# version          :0.7.0
+# usage            :Loaded via "include commands.lmp" in sim.lmp
+# LAMMPS_version   :patch_7Jan2022
+
+# Record NE morphology --------------------------------------------------------
+dump morphology monolayer atom 1000 ../data/NE.lammpstrj
+run 10000
+undump morphology
