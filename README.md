@@ -1,4 +1,4 @@
-CGNPS: Coarse-Grained Nuclear Periphery Simulator
+# CGNPS: Coarse-Grained Nuclear Periphery Simulator
 
 CGNPS is a molecular dynamics simulation package for simulating a coarse-
 grained model of the mammalian nuclear periphery. CGNPS is intended to enable a
@@ -8,56 +8,49 @@ tune interaction parameters for calibration with biomechanical data, and (c)
 build and run custom in silico experiments to study nuclear
 mechanotransduction.
 
-Date:               13-Apr-22
-Version:            0.7.0
-
 ![CGNPS banner](banner.png)
 
-################################## Developers #################################
+### Developers
 Pranjal Singh, pranjal.officemail@gmail.com
 
-################# Description of files in this directory ######################
-README              the README (this) file
-assembly/*          in silico structural assembly module
-LICENSE             the license file
+### Dependencies
+1. LAMMPS \
+Steve Plimpton, Fast Parallel Algorithms for Short-Range Molecular Dynamics,
+J Comp Phys, 117, 1-19 (1995). https://doi.org/10.1006/jcph.1995.1039 \
+Website: https://lammps.sandia.gov
 
-############################### Dependencies ##################################
-1. LAMMPS
-# Steve Plimpton, Fast Parallel Algorithms for Short-Range Molecular Dynamics,
-# J Comp Phys, 117, 1-19 (1995). https://doi.org/10.1006/jcph.1995.1039
-# website: https://lammps.sandia.gov
+2. Fluidmembrane Package \
+Fu, S.-P., Peng, Z., Yuan, H., Kfoury, R., Young, Y.-N. (2016),
+Lennard-Jones type pair-potential method for coarse-grained lipid bilayer
+membrane simulations in LAMMPS, Mendeley Data, V1,
+https://doi.org/10.17632/4v53nkv5hc.1 \
+Website: https://doi.org/10.17632/4v53nkv5hc.1
 
-2. Fluidmembrane Package
-# Fu, S.-P., Peng, Z., Yuan, H., Kfoury, R., Young, Y.-N. (2016),
-# Lennard-Jones type pair-potential method for coarse-grained lipid bilayer
-# membrane simulations in LAMMPS, Mendeley Data, V1,
-# https://doi.org/10.17632/4v53nkv5hc.1
-# website: https://doi.org/10.17632/4v53nkv5hc.1
+3. NumPy for Python 2 and Python 3 \
+Harris, C.R., Millman, K.J., van der Walt, S.J. et al. Array programming with
+NumPy. Nature 585, 357–362 (2020). https://doi.org/10.1038/s41586-020-2649-2 \
+Website: https://numpy.org
 
-3. NumPy for Python 2 and Python 3
-# Harris, C.R., Millman, K.J., van der Walt, S.J. et al. Array programming with
-# NumPy. Nature 585, 357–362 (2020). https://doi.org/10.1038/s41586-020-2649-2
-# website: https://numpy.org
+4. SciPy for Python 2 and Python 3 \
+Virtanen, P., Gommers, R., Oliphant, T.E. et al. SciPy 1.0: fundamental
+algorithms for scientific computing in Python. Nat Methods 17, 261–272 (2020)
+https://doi.org/10.1038/s41592-019-0686-2 \
+Website: https://scipy.org
 
-4. SciPy for Python 2 and Python 3
-# Virtanen, P., Gommers, R., Oliphant, T.E. et al. SciPy 1.0: fundamental
-# algorithms for scientific computing in Python. Nat Methods 17, 261–272 (2020)
-# https://doi.org/10.1038/s41592-019-0686-2
-# website: https://scipy.org
+5. Pizza.py Toolkit \
+Website: https://lammps.github.io/pizza/
 
-5. Pizza.py Toolkit
-# website: https://lammps.github.io/pizza/
-
-############################# Installation ####################################
+### Installation
 1. Please refer to the website for installation instructions of the above 5
    dependencies.
 2. The original pair_fluidmembrane.cpp in Fluidmembrane dependency will need a
    few modifications to make it compatible with the new LAMMPS versions. It is
    easy to do, but feel free to contact the Developer for the updated version.
 
-################################ Usage ########################################
-Step 0: Read the article at: [Link to bioRxiv article to be added here, likely
-        by May 15, 2022]
+### Usage
+Step 0: Read the article at:
+
+       [Link to bioRxiv article to be added here, likely by May 15, 2022]
 
 Step 1: Assemble the CGNP structure with bioimaging and bioinformatics data.
 
