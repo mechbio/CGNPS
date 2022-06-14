@@ -40,7 +40,9 @@ Website: https://scipy.org
 5. Pizza.py Toolkit \
 Website: https://lammps.github.io/pizza/
 
-### Installation
+### Setup
+[A complete setup.sh script will be added soon. For time being,
+consider the following directions:]
 1. Please refer to the website for installation instructions of the above 5
    dependencies.
 2. The original pair_fluidmembrane.cpp in Fluidmembrane dependency will need a
@@ -50,7 +52,7 @@ Website: https://lammps.github.io/pizza/
 ### Usage
 Step 0: Read the article at:
 
-       [Link to bioRxiv article to be added here, likely by May 15, 2022]
+       [Link to article to be added here]
 
 Step 1: Assemble the CGNP structure with bioimaging and bioinformatics data.
 
@@ -68,3 +70,11 @@ Step 2: Check calibration of fluctuation spectra of nuclear surface.
         fluctuations. A user would reproduce Fig. 2 in the article using this
         software module to check the calibration of nuclear surface
         fluctuations.
+
+### Development
+
+Following works-in-progress directories are excluded with .gitignore:
+stretching/
+indentation/
+
+Please contact the Developers listed above to collaborate in the development.
