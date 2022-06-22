@@ -1,16 +1,16 @@
-viz: visualization sub-module
+# viz: visualization sub-module
 
 Date:               10-Apr-22
 Version:            0.7.0
 
-################### Description of files in this directory ####################
-README                the README (this) file
+### Description of files in this directory
+README.md             this file
 viz.sh                processing structure file for visualization (viz)
 composition.ovito     viz of CGNP (Fig. 1a) and its composition (Fig. 1b)
 slice-diagonal.ovito  viz of a slice of CGNP along the xy-diagonal (Fig. 1c)
 surface.ovito         viz of nuclear surface deformation (Fig. 2a)
 
-#################################### Usage ####################################
+### Usage
 1. Run the viz.sh to process ../data/combined.data.
 
 2. On first time run, each OVITO file may require to manually relocating

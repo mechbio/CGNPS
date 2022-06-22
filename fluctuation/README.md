@@ -1,16 +1,16 @@
-fluctuation: fluctuation module
+# fluctuation: fluctuation module
 
 Date:               10-Apr-22
 Version:            0.7.0
 
-################### Description of files in this directory ####################
+### Description of files in this directory
 README              the README (this) file
 sim/*               recording fluctuation of nuclear surface
-plt/*               computation of the fluctuation spectra
+plt/*               computation and plotting of the fluctuation spectra
 data/*              storage of numerical data
 fig/*               save plot
 
-#################################### Usage ####################################
+### Usage
 
 1. The sim/README has instructions to generate data/NM.lammpstrj which contains
    coordinates of fluctuating nuclear surface.
@@ -24,7 +24,7 @@ fig/*               save plot
 
 6. The plot is saved to fig directory (created at runtime).
 
-################### Description of files in ./data/ ###########################
+### Description of files in ./data/
 freq.dat           initially generated NE structure with CSK
 NM.lammpstrj       NM particle positions
 sim.out            LAMMPS log output during simulation
