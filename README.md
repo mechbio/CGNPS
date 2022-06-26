@@ -41,8 +41,7 @@ Website: https://lammps.github.io/pizza/
 1. Please refer to the website for installation instructions of the above 5
    dependencies.
 2. The original pair_fluidmembrane.cpp in Fluidmembrane dependency will need a
-   few modifications to make it compatible with the new LAMMPS versions. It is
-   easy to do, but feel free to contact the Developer for the updated version.
+   few modifications to make it compatible with the new LAMMPS versions.
 
 ### Usage
 Step 0: Read the article at:
