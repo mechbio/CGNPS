@@ -90,7 +90,7 @@ git push -u origin 1
 # Click Create pull request to open a new pull request.
 ```
 
-# Questions, Comments, Clarifications, Requests
+### Questions, Comments, Clarifications, Requests
 
 Please use the Discussions tab. It'll be nice if you can introduce yourself to everyone in the Welcome thread.
 
