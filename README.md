@@ -2,16 +2,13 @@
 
 CGNPS is a molecular dynamics simulation package for simulating a coarse-
 grained model of the mammalian nuclear periphery. CGNPS is intended to enable a
-researcher to study nuclear mechanotransduction in three stages: (a) assemble
-the nuclear periphery structure with bioimaging and bioinformatics data, (b)
-tune interaction parameters for calibration with biomechanical data, and (c)
+researcher to study nuclear mechanotransduction in three steps: (1) assemble
+the nuclear periphery structure with bioimaging and bioinformatics data, (2)
+tune interaction parameters for calibration with biomechanical data, and (3)
 build and run custom in silico experiments to study nuclear
 mechanotransduction.
 
 ![CGNPS banner](banner.png)
-
-### Developers
-Pranjal Singh, pranjal.officemail@gmail.com
 
 ### Dependencies
 1. LAMMPS \
@@ -41,8 +38,6 @@ Website: https://scipy.org
 Website: https://lammps.github.io/pizza/
 
 ### Setup
-[A complete setup.sh script will be added soon. For time being,
-consider the following directions:]
 1. Please refer to the website for installation instructions of the above 5
    dependencies.
 2. The original pair_fluidmembrane.cpp in Fluidmembrane dependency will need a
@@ -63,7 +58,7 @@ Step 1: Assemble the CGNP structure with bioimaging and bioinformatics data.
         bioinformatics data to assemble the NP structure for the specific
         mammalian nucleus being investigated.
 
-Step 2: Check calibration of fluctuation spectra of nuclear surface.
+Step 2a: Check calibration of fluctuation spectra of nuclear surface.
 
         The fluctuation module is used to generate fluctuation spectrum of
         nuclear surface for comparison with experimental nuclear surface
@@ -73,8 +68,31 @@ Step 2: Check calibration of fluctuation spectra of nuclear surface.
 
 ### Development
 
-Following works-in-progress directories are excluded with .gitignore:
-stretching/
-indentation/
+With following steps you can submit fixes for open issues or you can open a new
+issue and submit fix for it:
 
-Please contact the Developers listed above to collaborate in the development.
+```shell
+# Fork this repository with the Fork button on top right
+# Clone it to your local system
+git clone https://github.com/<YourUserName>/CGNPS.git
+# Make a new branch with issue number (e.g. 1) as branch name
+git checkout -b 1
+# Create a new remote for this upstream repo
+git remote add upstream https://github.com/mechbio/CGNPS
+# Make your changes
+...
+# Stage them and commit with the issue tag (i.e. #1 for issue number 1)
+git add .
+git commit -m "fixes #1"
+# Push it back to your repo
+git push -u origin 1
+# Click the Compare & pull request button at github.com/<YourUserName>/CGNPS
+# Click Create pull request to open a new pull request.
+```
+
+# Questions, Comments, Clarifications, Requests
+
+Please use the Discussions tab. It'll be nice if you can introduce yourself to everyone in the Welcome thread.
+
+### References
+CGNPS improves and extends the CGNES package obtained from https://etda.libraries.psu.edu/catalog/26325pxs392.
