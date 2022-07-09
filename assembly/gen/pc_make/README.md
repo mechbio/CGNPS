@@ -11,7 +11,7 @@ src/*               C++ code for creating initial PC chain with input_data/*
 Makefile            make file for compiling src/* into create_chromo
 senescence.lam      template file with LAMMPS commands
 senescence.sh       generates run_dir (using create_chromo and senescence.lam)
-pc.sh               to setup and run simulation on cluster to obtain pc.data
+pc.sh               to setup and run simulation to obtain pc.data
 
 ### Attribution and Source of Original Code
 The code in this directory is a modified version of a code obtained from
@@ -43,15 +43,14 @@ https://doi.org/10.1016/j.celrep.2019.08.045.
    a. for compatibility with atom_style hybrid.
    b. for improved communication cutoff.
    c. to remove redundant atoms and angles.
-   d. to convert simualtion lengthscale.
-   e. to convert simualtion energyscale.
+   d. to convert simulation lengthscale.
+   e. to convert simulation energyscale.
    f. to export with filename 'pc.data'.
 3. senescence.sh modified:
    a. for reproducibility with pseudo-randomness.
    b. to remove excess run time.
-4. init.qsub added to submit simulation to run on cluster.
-5. pc.sh added to automate most of the process to generate pc.data.
-6. Replaced README file applicable to the original code with this file
+4. pc.sh added to automate most of the process to generate pc.data.
+5. Replaced README file applicable to the original code with this file
    applicable to this modified code.
 
 ### Usage

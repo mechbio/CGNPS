@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# CGNPS - Coarse-Grained Nuclear Periphery Simulator
+# This file is part of CGNPS - Coarse-Grained Nuclear Periphery Simulator.
+#
+# Copyright 2021, 2022 Pranjal Singh
+#
+# When contributing, please append a new line (e.g. # Copyright [Year] [Name])
+# to the above copyright notice.
 #
 # See the README file in the top-level CGNPS directory.
-# This software is released under the GNU General Public License.
+# This software is distributed under the GNU General Public License.
 
 # -----------------------------------------------------------------------------
 # This file plots fluctuation spectra from NE morphology.

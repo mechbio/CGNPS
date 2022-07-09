@@ -4,5 +4,6 @@
 */sim/log.lammps
 
 # Exclude works in progress
+wip/
 stretching/
 indentation/

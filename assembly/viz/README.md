@@ -13,7 +13,7 @@ surface.ovito         viz of nuclear surface deformation (Fig. 2a)
 ### Usage
 1. Run the viz.sh to process ../data/combined.data.
 
-2. On first time run, each OVITO file may require to manually relocating
+2. On first time run, each OVITO file may require manual reloading of
    combined2.data, init.dump_local and init.lammpstrj from ../data/ into the
    'Data source' and the two 'Load trajectory' in the 'Modifications'
    pipelines respectively.
